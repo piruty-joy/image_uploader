@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Image Uploader{% endblock title %}
+
+{% block content %}
+
+<!-- Upload form. Note enctype attribute! -->
+<form action="{% url 'list' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p><input type="submit" value="Upload" /></p>
+</form>
+
+{% if images %}
+<table class="table table-bordered">
+    <tbody>
+        <tr>
+            {% for image in images %}
+                {% if forloop.counter0|divisibleby:"4" %}</tr><tr>{% endif %}
+                <td><a href="{{ image.image.url }}"><img src="{{ MEDIA_URL }}{{ image.image.url }}" alt="{{image.image.name}}" width="200" height="150" /></a></td>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+{% else %}
+    <p>No documents.</p>
+{% endif %}
+
+{% endblock content %}
